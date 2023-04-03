@@ -4,15 +4,14 @@ static const BaseType_t app_cpu = 0;
 static const BaseType_t app_cpu = 1;
 #endif
 
-//refers to in-built LED
 static const int led_pin1 = 2;
-static const int led_pin2 = 3;
+static const int led_pin2 = 4;
 void toggleLED1(void *parameter)
 {
   while(1)
   {
     digitalWrite(led_pin1, HIGH);
-    vTaskDelay(500/portTICK_PERIOD_MS);
+    vTaskDelay(500/portTICK_PERIOD_MS); 
     digitalWrite(led_pin1, LOW);
     vTaskDelay(1000/portTICK_PERIOD_MS);
   }
@@ -55,5 +54,4 @@ void setup()
 
 void loop()
 {
-
 }

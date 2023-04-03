@@ -1,10 +1,10 @@
 #if CONFIG_FREERTOS_UNICORE
-static const BaseType_t app_cpu = 0;
+static const BaseType_t app_cpu = 0; //defining the CPU
 #else
 static const BaseType_t app_cpu = 1;
 #endif
 
-const char msg[] = "Test String. ";
+const char msg[] = "Test String. ";	//A Character array to loop through each character
 
 static TaskHandle_t task_1 = NULL;
 static TaskHandle_t task_2 = NULL;
@@ -54,7 +54,7 @@ void setup()
   &task_1,
   app_cpu);
 
-  xTaskCreatePinnedToCore(startTask1,
+  xTaskCreatePinnedToCore(startTask2,
   "Task 2",
   1024,
   NULL,

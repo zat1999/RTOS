@@ -16,14 +16,19 @@ void blinkLED(void *parameters) {
 
 
 
-  // Copy the parameter into a local variable
+  //copies parameters into local var
   int num = *(int *)parameters;
+  
+  //increments the mutex
   xSemaphoreGive(mutex);
+  
+  
+  
   // Print the parameter
   Serial.print("Received: ");
   Serial.println(num);
 
-  // Configure the LED pin
+  //data directions
   pinMode(led_pin, OUTPUT);
 
   // Blink forever and ever
@@ -56,21 +61,24 @@ void setup() {
   delay_arg = Serial.parseInt();
   Serial.print("Sending: ");
   Serial.println(delay_arg);
-
-    mutex = xSemaphoreCreateMutex();
+  
+  //creates the mutex
+  mutex = xSemaphoreCreateMutex();
+  
+  //set mutex to zero(in critical section) so blocks the other code from accessing this thread
   xSemaphoreTake(mutex,portMAX_DELAY);
-  //alt use portMAX_DELAY runs indefinetly
 
 
+  //creates the task
   xTaskCreatePinnedToCore(blinkLED,
                           "Blink LED",
                           1024,
-                          (void *)&delay_arg,
+                          (void *)&delay_arg, //passing the parameters from its local var
                           1,
                           NULL,
                           app_cpu);
 
-  //waits for mutex to be turned/increment (max delay)
+  //waits for mutex to be returned/increment (max delay)
   xSemaphoreTake(mutex, portMAX_DELAY);
   Serial.println("Done!");
 }

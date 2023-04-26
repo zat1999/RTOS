@@ -10,7 +10,7 @@ In this example the scheduler is responsible for running two task threads. One w
 
 https://www.youtube.com/watch?v=1OOijP3sb5g
 
-The LED will blink 5 times then suspend the thread responsible for the blink. Another task is responsible for constantly listening duing the suspended states of the blink phase.
+The LED will blink 5 times then suspend the thread responsible for the blink. Another task is responsible for constantly listening during the suspended states of the blink phase.
 
 
 3. LED_Blink_Updater

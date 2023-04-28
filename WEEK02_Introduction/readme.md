@@ -10,7 +10,7 @@ Basic blink using the vTaskDelay. vTaskDelay will suspend that current thread an
 
 https://www.youtube.com/watch?v=KEoJV40gVl4
 
-The scheduler splits the time evenly for these two threads.
+The scheduler splits the time evenly for these two threads since both have the same priority.
 
 3) Triple Blink, with 3 Rates and 3 Different Priorities
 

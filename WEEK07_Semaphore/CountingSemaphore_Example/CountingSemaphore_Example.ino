@@ -37,11 +37,16 @@ static SemaphoreHandle_t sem_params;  //handle for semaphore reference
 void myTask(void *parameters) {
   Message msg = *(Message *)parameters;  //copy the message struct from the parater to local
 
+ 
+  
   Serial.print("Received: ");
   Serial.print(msg.body);
   Serial.print(" ---- Length: ");
   Serial.println(msg.len);
 
+  //decreases by 1
+   xSemaphoreGive(sem_params);
+  
   vTaskDelay(1000 / portTICK_PERIOD_MS);
   vTaskDelete(NULL);
 }
@@ -65,6 +70,7 @@ void setup() {
   strcpy(msg.body, text);
   msg.len = strlen(text);
 
+  //creating 5 threads
   for (int i = 0; i < num_task; i++) {
     sprintf(task_name, "Task %i", i);
     xTaskCreatePinnedToCore(myTask,
@@ -76,6 +82,7 @@ void setup() {
                             app_cpu);
   }
 
+  //checks if all task are done
   for (int i = 0; i < num_task; i++) {
     xSemaphoreTake(sem_params, portMAX_DELAY);
   }

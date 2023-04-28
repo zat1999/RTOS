@@ -1,5 +1,5 @@
 
-
+//Uses 1 core
 #if CONFIG_FREERTOS_UNICORE
 static const BaseType_t app_cpu = 0;
 #else
@@ -8,7 +8,6 @@ static const BaseType_t app_cpu = 1;
 
 static int shared_var = 0;
 static SemaphoreHandle_t mutex;
-//#include semphr.h
 
 void incTask(void *parameters)
 {
@@ -17,22 +16,23 @@ void incTask(void *parameters)
   while(1)
   {
 
+    //checks if the thread is available, no wait time, and if successful posted
     if(xSemaphoreTake(mutex,0) == pdTRUE)
     {
-
     
-
+    //if mutex is taken carries out this thread and also decreases its count to zero. Therefore another thread using this cannot use function/shared resource cannot run it
     local_var = shared_var;
     local_var++;
     vTaskDelay(random(100,500) / portTICK_PERIOD_MS);
     shared_var = local_var;
 
+    //releases lock
     xSemaphoreGive(mutex);
 
     Serial.println(shared_var);
     }else
     {
-      //
+      // will do a different task if condition fails, whilst waiting 
     }
   } 
 }
@@ -40,11 +40,15 @@ void incTask(void *parameters)
 
 void setup() {
   // put your setup code here, to run once:
-  randomSeed(analogRead(0));
+randomSeed(analogRead(0));
 Serial.begin(115200);
 
 vTaskDelay(1000/portTICK_PERIOD_MS);
+  
+  //creates mutex
 mutex = xSemaphoreCreateMutex();
+  
+  //creates two threads
 xTaskCreatePinnedToCore(
   incTask,
   "Task 1",
@@ -64,6 +68,7 @@ xTaskCreatePinnedToCore(
   NULL, //assigning handles
   app_cpu);
 
+  //deletes start & loop
 vTaskDelete(NULL);
 
 }

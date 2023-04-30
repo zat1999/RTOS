@@ -15,3 +15,9 @@ Priority Inversion Mutex Solution:
 https://youtu.be/ORIAXrQiBgQ
 
 Note in the inital program, we use binary semaphore to control the critical sections, however if we use mutexes, the rtos library has some inbuilt protection by upgrading the priority level of the lower task priority to match and then decreases it. Note that now the delay is shorter, task l runs first, completes and then task h is able to run and complete, unlike in the first program, l and h runs but does not complete, until task m finishes. 
+
+Priority Inversion Critical Marker Solution:
+
+https://youtu.be/EW-rniZv1yU
+
+In this separate solution we disable the scheduler. So task L is able to run first and release the lock the lock instantly so the higher priority task can run. There is no delay. Note using spinlocks to disable the scheduler may give some undesired effects.
